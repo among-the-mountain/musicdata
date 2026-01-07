@@ -4,7 +4,58 @@
 document.addEventListener('DOMContentLoaded', function() {
     initializeDashboard();
     initializeNavigation();
+    initializeCards();
 });
+
+// Initialize interactive cards
+function initializeCards() {
+    const cards = document.querySelectorAll('.interactive-card');
+    
+    cards.forEach(card => {
+        card.addEventListener('click', function(e) {
+            // Don't toggle if clicking inside an expanded card's content
+            if (this.classList.contains('expanded') && e.target.closest('.card-content')) {
+                return;
+            }
+            
+            // Toggle expanded state
+            this.classList.toggle('expanded');
+            
+            // Resize charts when card is expanded
+            if (this.classList.contains('expanded')) {
+                const cardId = this.dataset.card;
+                setTimeout(() => {
+                    resizeChartsInCard(cardId);
+                }, 300);
+            }
+        });
+    });
+}
+
+// Resize charts when card is expanded
+function resizeChartsInCard(cardId) {
+    const chartMap = {
+        'trend-chart': 'trend-chart',
+        'album-types': 'album-types-chart',
+        'music-genres': 'genres-chart',
+        'top-albums': 'top-albums-chart',
+        'top-artists': 'top-artists-chart',
+        'wordcloud': 'wordcloud',
+        'sentiment-chart': 'sentiment-chart'
+    };
+    
+    const chartId = chartMap[cardId];
+    if (chartId) {
+        const chartDom = document.getElementById(chartId);
+        if (chartDom) {
+            const chartInstance = echarts.getInstanceByDom(chartDom);
+            if (chartInstance) {
+                chartInstance.resize();
+            }
+        }
+    }
+}
+
 
 // Navigation module switching
 function initializeNavigation() {

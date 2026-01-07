@@ -80,6 +80,96 @@ body {
     padding: 20px;
 }
 
+/* Interactive Cards */
+.cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+    gap: 20px;
+    padding: 20px 0;
+}
+
+.interactive-card {
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.interactive-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+}
+
+.card-header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 20px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    position: relative;
+}
+
+.card-icon {
+    font-size: 2em;
+}
+
+.card-header h3 {
+    flex: 1;
+    margin: 0;
+    font-size: 1.2em;
+}
+
+.expand-icon {
+    font-size: 1.2em;
+    transition: transform 0.3s ease;
+}
+
+.interactive-card.expanded .expand-icon {
+    transform: rotate(180deg);
+}
+
+.card-preview {
+    padding: 20px;
+    color: #666;
+    font-style: italic;
+    background: #f8f9fa;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.interactive-card.expanded .card-preview {
+    display: none;
+}
+
+.card-content {
+    display: none;
+    padding: 25px;
+    animation: slideDown 0.3s ease;
+}
+
+.interactive-card.expanded .card-content {
+    display: block;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Single card in module */
+.cards-grid .interactive-card:only-child {
+    grid-column: 1 / -1;
+}
+
+
 /* Header Section */
 .header {
     background: white;
