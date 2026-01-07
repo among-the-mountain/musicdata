@@ -3,7 +3,61 @@
 // Initialize all charts when page loads
 document.addEventListener('DOMContentLoaded', function() {
     initializeDashboard();
+    initializeNavigation();
 });
+
+// Navigation module switching
+function initializeNavigation() {
+    const navLinks = document.querySelectorAll('.nav-link');
+    const modules = document.querySelectorAll('.module');
+    
+    navLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            // Remove active class from all links and modules
+            navLinks.forEach(l => l.classList.remove('active'));
+            modules.forEach(m => m.classList.remove('active'));
+            
+            // Add active class to clicked link
+            this.classList.add('active');
+            
+            // Show corresponding module
+            const moduleId = 'module-' + this.dataset.module;
+            const targetModule = document.getElementById(moduleId);
+            if (targetModule) {
+                targetModule.classList.add('active');
+                
+                // Resize charts in the activated module
+                resizeChartsInModule(moduleId);
+            }
+        });
+    });
+}
+
+// Resize charts when module becomes active
+function resizeChartsInModule(moduleId) {
+    setTimeout(() => {
+        const chartIds = {
+            'module-trend': ['trend-chart'],
+            'module-structure': ['album-types-chart', 'genres-chart'],
+            'module-rankings': ['top-albums-chart', 'top-artists-chart'],
+            'module-wordcloud': ['wordcloud'],
+            'module-sentiment': ['sentiment-chart']
+        };
+        
+        const charts = chartIds[moduleId] || [];
+        charts.forEach(chartId => {
+            const chartDom = document.getElementById(chartId);
+            if (chartDom) {
+                const chartInstance = echarts.getInstanceByDom(chartDom);
+                if (chartInstance) {
+                    chartInstance.resize();
+                }
+            }
+        });
+    }, 100);
+}
 
 async function initializeDashboard() {
     try {
