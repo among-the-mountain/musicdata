@@ -9,9 +9,6 @@ import random
 from typing import List, Dict
 import hashlib
 import base64
-from Crypto.Cipher import AES
-from Crypto.Util.Padding import pad
-import binascii
 
 
 class NetEaseMusicCrawler:
