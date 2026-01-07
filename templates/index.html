@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>音乐大数据分析可视化系统</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <!-- ECharts Library -->
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/echarts-wordcloud@2.1.0/dist/echarts-wordcloud.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <!-- Header Section -->
+        <header class="header fade-in">
+            <h1>🎵 音乐大数据分析可视化系统</h1>
+            <p class="subtitle">基于网易云音乐的音乐数据深度分析与洞察</p>
+            
+            <!-- Overview Statistics -->
+            <div class="overview-stats">
+                <div class="stat-card">
+                    <div class="stat-value" id="total-songs">-</div>
+                    <div class="stat-label">歌曲总数</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="total-artists">-</div>
+                    <div class="stat-label">艺术家数量</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="total-albums">-</div>
+                    <div class="stat-label">专辑数量</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="total-comments">-</div>
+                    <div class="stat-label">评论总数</div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Trend Section: Music Release Trend -->
+        <section class="trend-section fade-in">
+            <h2 class="section-title">📈 音乐发布趋势分析</h2>
+            <p class="section-description">
+                展示音乐作品随时间的发布趋势，揭示音乐市场的季节性变化和用户偏好演变
+            </p>
+            <div class="chart-container">
+                <div id="trend-chart" style="width: 100%; height: 450px;"></div>
+            </div>
+        </section>
+
+        <!-- Structure Analysis Section: Album Types and Music Genres -->
+        <section class="section fade-in">
+            <h2 class="section-title">🎼 音乐结构分析</h2>
+            <p class="section-description">
+                深入分析音乐市场的构成，包括专辑类型和音乐类型的分布情况
+            </p>
+            <div class="chart-row">
+                <!-- Album Types Chart -->
+                <div class="chart-card">
+                    <h3>专辑类型数据分析</h3>
+                    <p style="color: #666; font-size: 0.9em; margin-bottom: 15px;">
+                        分析不同专辑类型（录音室专辑、现场专辑等）的数据分布
+                    </p>
+                    <div id="album-types-chart" style="width: 100%; height: 400px;"></div>
+                </div>
+                
+                <!-- Music Genres Chart -->
+                <div class="chart-card">
+                    <h3>音乐类型占比分析</h3>
+                    <p style="color: #666; font-size: 0.9em; margin-bottom: 15px;">
+                        揭示市场主流音乐类型和潜在的音乐趋势
+                    </p>
+                    <div id="genres-chart" style="width: 100%; height: 400px;"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Rankings Section: Top Album Types and Top Artists -->
+        <section class="section fade-in">
+            <h2 class="section-title">🏆 排行洞察分析</h2>
+            <p class="section-description">
+                快速提炼市场中最重要的排行数据，为用户推荐和决策提供依据
+            </p>
+            <div class="chart-row">
+                <!-- Top Album Types -->
+                <div class="chart-card">
+                    <h3>专辑类型TOP10</h3>
+                    <p style="color: #666; font-size: 0.9em; margin-bottom: 15px;">
+                        展示最受欢迎的专辑类型，为用户提供热门专辑类型推荐
+                    </p>
+                    <div id="top-albums-chart" style="width: 100%; height: 400px;"></div>
+                </div>
+                
+                <!-- Top Artists -->
+                <div class="chart-card">
+                    <h3>艺术家作品数量TOP5</h3>
+                    <p style="color: #666; font-size: 0.9em; margin-bottom: 15px;">
+                        展示发布作品数量最多的艺术家，揭示市场活跃的创作者
+                    </p>
+                    <div id="top-artists-chart" style="width: 100%; height: 400px;"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Word Cloud Section -->
+        <section class="wordcloud-section fade-in">
+            <h2 class="section-title">☁️ 音乐名称词云分析</h2>
+            <p class="section-description">
+                通过词云展示热门音乐名称和关键词，揭示用户关注的音乐热点，为推荐和搜索提供灵感
+            </p>
+            <div id="wordcloud"></div>
+        </section>
+
+        <!-- Sentiment Section -->
+        <section class="sentiment-section fade-in">
+            <h2 class="section-title">💭 用户评论情感趋势分析</h2>
+            <p class="section-description">
+                基于AI深度分析用户评论的情感倾向，理解用户对音乐作品的真实反应和情感态度
+            </p>
+            
+            <div class="chart-row">
+                <div class="chart-card">
+                    <h3>评论情感分布</h3>
+                    <div id="sentiment-chart" style="width: 100%; height: 400px;"></div>
+                </div>
+                
+                <div class="chart-card">
+                    <h3>情感统计概览</h3>
+                    <div class="sentiment-stats">
+                        <div class="sentiment-stat positive">
+                            <div class="label">正面评论</div>
+                            <div class="value" id="positive-count">-</div>
+                            <div class="percentage" id="positive-pct">-%</div>
+                        </div>
+                        <div class="sentiment-stat neutral">
+                            <div class="label">中性评论</div>
+                            <div class="value" id="neutral-count">-</div>
+                            <div class="percentage" id="neutral-pct">-%</div>
+                        </div>
+                        <div class="sentiment-stat negative">
+                            <div class="label">负面评论</div>
+                            <div class="value" id="negative-count">-</div>
+                            <div class="percentage" id="negative-pct">-%</div>
+                        </div>
+                    </div>
+                    
+                    <div class="sentiment-summary">
+                        <h4>情感分析总结</h4>
+                        <p>
+                            基于用户评论的情感分析显示，大部分用户对音乐作品持有积极态度。
+                            情感分析采用先进的自然语言处理技术，能够准确识别用户评论中的情感倾向。
+                        </p>
+                        <p style="margin-top: 10px; font-size: 0.9em; color: #666;">
+                            注：情感分析基于Qwen3-30B-A3B AI模型，提供准确的情感识别能力
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>© 2024 音乐大数据分析可视化系统 | 基于Flask + ECharts构建 | 数据来源：网易云音乐</p>
+            <p style="margin-top: 10px; font-size: 0.9em;">
+                本系统采用响应式设计，所有容器自适应高度和宽度，支持各种设备浏览
+            </p>
+        </footer>
+    </div>
+
+    <!-- Load Application JavaScript -->
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>
